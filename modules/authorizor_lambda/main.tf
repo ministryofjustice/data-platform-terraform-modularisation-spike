@@ -6,7 +6,7 @@ module "data_product_authorizer_lambda" {
   role_name                      = "authorizer_lambda_role_${var.environment}"
   policy_json                    = data.aws_iam_policy_document.iam_policy_document_for_authorizer_lambda.json
   function_name                  = "data_product_authorizer_${var.environment}"
-  create_role                    = false
+  create_role                    = true
   reserved_concurrent_executions = 1
 
   image_uri    = "374269020027.dkr.ecr.eu-west-2.amazonaws.com/data-platform-authorizer-lambda-ecr-repo:1.1.0"

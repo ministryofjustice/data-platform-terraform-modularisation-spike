@@ -1,7 +1,7 @@
 module "s3-bucket" { #tfsec:ignore:aws-s3-enable-versioning
   source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v7.0.0"
 
-  bucket_prefix      = "data-platform-products-priya-${local.environment}"
+  bucket_prefix      = "data-platform-products-${local.environment}"
   versioning_enabled = true
   # Refer to the below section "Replication" before enabling replication
   replication_enabled = false

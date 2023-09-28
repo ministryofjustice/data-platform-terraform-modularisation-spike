@@ -3,11 +3,11 @@ module "data_product_presigned_url_lambda" {
   application_name               = "data_product_presigned_url"
   tags                           = var.tags
   description                    = "Lambda to generate a presigned url for uploading data"
-  create_role                    = false
+  create_role                    = true
   role_name                      = "presigned_url_lambda_role_${var.environment}"
   policy_json                    = var.policy_json
   function_name                  = "data_product_presigned_url_${var.environment}"
-   reserved_concurrent_executions = 1
+  reserved_concurrent_executions = 1
 
   image_uri    = "374269020027.dkr.ecr.eu-west-2.amazonaws.com/data-platform-presigned-url-lambda-ecr-repo:1.1.0"
   timeout      = 600
