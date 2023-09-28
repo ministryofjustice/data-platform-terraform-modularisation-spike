@@ -15,7 +15,7 @@ resource "aws_api_gateway_deployment" "deployment" {
     #       resources will show a difference after the initial implementation.
     #       It will stabilize to only change when resources change afterwards.
     redeployment = sha1(jsonencode([
-      aws_api_gateway_resource.upload_data.id
+      aws_api_gateway_resource.upload_data
     ]))
   }
 
