@@ -16,7 +16,7 @@ module "data_product_authorizer_lambda" {
 
   environment_variables = {
     authorizationToken = "placeholder"
-    api_resource_arn   = var.api_resource_arn
+    api_resource_arn   = aws_api_gateway_rest_api.data_platform.execution_arn
   }
 
   allowed_triggers = {
@@ -25,7 +25,7 @@ module "data_product_authorizer_lambda" {
       action        = "lambda:InvokeFunction"
       function_name = "data_product_authorizer_${var.environment}"
       principal     = "apigateway.amazonaws.com"
-      source_arn    = var.api_source_arn
+      source_arn    = "arn:aws:execute-api:${var.region}:${var.account_id}:${aws_api_gateway_rest_api.data_platform.id}/*/*"
     }
   }
 }

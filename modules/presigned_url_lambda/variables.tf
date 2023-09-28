@@ -20,15 +20,11 @@ variable "region" {
   type = string
 }
 
-variable "source_arn_value" {
-  type = string
-}
-
 variable "tags" {
   type        = map(string)
   description = "Common tags to be used by all resources"
 }
 
 variable "policy_json" {
-  type        = string
+  type = string
 }

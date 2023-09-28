@@ -11,16 +11,6 @@ variable "environment" {
   type        = string
 }
 
-variable "api_resource_arn" {
-  description = "The resource ARN of the API gateway"
-  type        = string
-}
-
-variable "api_source_arn" {
-  description = "The source ARN of the API gateway"
-  type        = string
-}
-
 variable "authorizer_version" {
   type = string
 }
