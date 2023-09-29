@@ -1,7 +1,7 @@
 # # presigned url API endpoint
 
 resource "aws_api_gateway_resource" "upload_data" {
-  parent_id   = var.root_resource_id
+  parent_id   = var.parent_resource_id
   path_part   = "upload_data"
   rest_api_id = var.gateway_id
 }

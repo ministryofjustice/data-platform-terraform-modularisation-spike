@@ -8,12 +8,12 @@ module "api_core" {
   authorizer_version = local.authorizer_version
 }
 
-module "api_endpoints" {
-  source                          = "./modules/api_endpoints"
+module "api_data_product_ingest" {
+  source                          = "./modules/api_data_product_ingest"
   environment                     = local.environment
   presigned_url_lambda_invoke_arn = module.presigned_url_lambda.invoke_arn
   gateway_id                      = module.api_core.gateway_id
-  root_resource_id                = module.api_core.root_resource_id
+  parent_resource_id              = module.api_core.root_resource_id
   authorizor_id                   = module.api_core.authorizor_id
   account_id                      = local.account_id
   region                          = local.region
@@ -30,7 +30,7 @@ resource "aws_api_gateway_deployment" "deployment" {
     #       calculate a hash against whole resources. Be aware that using whole
     #       resources will show a difference after the initial implementation.
     #       It will stabilize to only change when resources change afterwards.
-    redeployment = sha1(module.api_endpoints.redeployment_triggers)
+    redeployment = sha1(module.api_data_product_ingest.redeployment_triggers)
   }
 
   lifecycle {
