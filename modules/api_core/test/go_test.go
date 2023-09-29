@@ -2,11 +2,13 @@ package test
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	testing "testing"
 
 	terra_test "github.com/gruntwork-io/terratest/modules/testing"
+	"github.com/stretchr/testify/assert"
 
 	//"github.com/aws/aws-sdk-go/aws"
 
@@ -24,16 +26,31 @@ func TestApiGateway(t *testing.T) {
 	})
 	defer terraform.Destroy(t, terraformOptions)
 	terraform.InitAndApply(t, terraformOptions)
-	//stageUrl := terraform.Output(t, terraformOptions, "deployment_invoke_url")
-	//statusCode := DoGetRequest(t, stageUrl)
-	//assert.Equal(t, 200, statusCode)
+	gatewayId := terraform.Output(t, terraformOptions, "gateway_id")
+	stageUrl := fmt.Sprintf("https://%s.execute-api.eu-west-2.amazonaws.com/", gatewayId)
+	statusCode := DoGetRequest(t, stageUrl)
+	assert.Equal(t, 200, statusCode)
 }
 
 func DoGetRequest(t terra_test.TestingT, api string) int {
-	resp, err := http.Get(api)
+	client := &http.Client{}
+
+	req, err := http.NewRequest("GET", api, nil)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	//We Read the response status on the line below.
+
+	req.Header.Add("authorizationToken", "Bearer placeholder")
+
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	if resp.StatusCode != 200 {
+		b, _ := io.ReadAll(resp.Body)
+		println("body " + string(b))
+	}
+
 	return resp.StatusCode
 }
