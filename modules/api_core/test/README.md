@@ -1,5 +1,6 @@
-# TODO add terratest
+# API core
 
-- set up an api gateway
-- apply the module
-- verify that we can authorize with the gateway
+This module creates just the REST API gateway resource, and an authorizor lambda
+to handle token-based authorization of requests.
+
+The actual API endpoints and the deployment stages are defined elsewhere.

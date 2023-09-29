@@ -28,7 +28,7 @@ data "aws_iam_policy_document" "allow_invoke_authoriser_lambda_doc" {
 }
 
 resource "aws_iam_policy" "allow_invoke_authoriser_lambda" {
-  name   = "allow_invoke_authoriser_lambda"
+  name   = "allow_invoke_authoriser_lambda_${var.environment}"
   path   = "/"
   policy = data.aws_iam_policy_document.allow_invoke_authoriser_lambda_doc.json
   tags   = var.tags
