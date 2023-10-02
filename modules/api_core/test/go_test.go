@@ -11,8 +11,6 @@ import (
 	terra_test "github.com/gruntwork-io/terratest/modules/testing"
 	"github.com/stretchr/testify/assert"
 
-	//"github.com/aws/aws-sdk-go/aws"
-
 	"github.com/gruntwork-io/terratest/modules/terraform"
 )
 
@@ -25,27 +23,32 @@ func TestApiGateway(t *testing.T) {
 			"environment": "mm",
 		},
 	})
-	//defer terraform.Destroy(t, terraformOptions)
+
+	defer terraform.Destroy(t, terraformOptions)
 	terraform.InitAndApply(t, terraformOptions)
+	time.Sleep(30 * time.Second)
+
 	gatewayId := terraform.Output(t, terraformOptions, "gateway_id")
 	stageUrl := fmt.Sprintf("https://%s.execute-api.eu-west-2.amazonaws.com/test/", gatewayId)
 
-	time.Sleep(20 * time.Second)
-
-	statusCode := DoGetRequest(t, stageUrl)
+	statusCode := DoGetRequest(t, stageUrl, "placeholder")
 	assert.Equal(t, 200, statusCode)
+
+	statusCode = DoGetRequest(t, stageUrl, "wrong")
+	assert.Equal(t, 403, statusCode)
 }
 
-func DoGetRequest(t terra_test.TestingT, api string) int {
+func DoGetRequest(t terra_test.TestingT, api string, token string) int {
 	client := &http.Client{}
 
-	println(api)
+	log.Println(api)
+
 	req, err := http.NewRequest("GET", api, nil)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	req.Header.Add("authorizationToken", "placeholder")
+	req.Header.Add("authorizationToken", token)
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -53,22 +56,16 @@ func DoGetRequest(t terra_test.TestingT, api string) int {
 	}
 
 	if resp.StatusCode != 200 {
-		for name, values := range req.Header {
-			for _, value := range values {
-				fmt.Println(name, value)
-			}
-		}
-
 		// Print all response headers for debugging
 		for name, values := range resp.Header {
 			for _, value := range values {
-				fmt.Println(name, value)
+				log.Println(name, value)
 			}
 		}
 
 		// Print response body for debugging
 		b, _ := io.ReadAll(resp.Body)
-		println("body " + string(b))
+		log.Println("body " + string(b))
 
 	}
 
