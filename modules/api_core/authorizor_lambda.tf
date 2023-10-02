@@ -9,14 +9,14 @@ module "data_product_authorizer_lambda" {
   create_role                    = true
   reserved_concurrent_executions = 1
 
-  image_uri    = "374269020027.dkr.ecr.eu-west-2.amazonaws.com/data-platform-authorizer-lambda-ecr-repo:1.1.0"
+  image_uri    = "374269020027.dkr.ecr.eu-west-2.amazonaws.com/data-platform-authorizer-lambda-ecr-repo:1.0.0"
   timeout      = 600
   tracing_mode = "Active"
   memory_size  = 512
 
   environment_variables = {
     authorizationToken = "placeholder"
-    api_resource_arn   = aws_api_gateway_rest_api.data_platform.execution_arn
+    api_resource_arn   = "${aws_api_gateway_rest_api.data_platform.execution_arn}/*/*"
     BUCKET_NAME        = "foo"
   }
 
