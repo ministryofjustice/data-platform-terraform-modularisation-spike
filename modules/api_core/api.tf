@@ -1,5 +1,5 @@
 resource "aws_api_gateway_rest_api" "data_platform" {
-  name = "data_platform-test"
+  name = "data_platform-${var.environment}"
 }
 
 resource "aws_api_gateway_authorizer" "authorizer" {

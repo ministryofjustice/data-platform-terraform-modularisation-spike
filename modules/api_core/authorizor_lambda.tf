@@ -17,6 +17,7 @@ module "data_product_authorizer_lambda" {
   environment_variables = {
     authorizationToken = "placeholder"
     api_resource_arn   = aws_api_gateway_rest_api.data_platform.execution_arn
+    BUCKET_NAME        = "foo"
   }
 
   allowed_triggers = {
