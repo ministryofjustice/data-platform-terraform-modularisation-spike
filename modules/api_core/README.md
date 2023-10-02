@@ -1,13 +1,18 @@
-# Authorizor lambda
+# API core
+
+This module creates a REST API with the custom authorizer.
+
+This is a dependency of all of the API resources and methods.
 
 Usage:
 
 ```
-module "data_product_authorizer_lambda" {
-  source = "./modules/authorizor_lambda"
-  environment = local.environment
-  api_resource_arn = aws_api_gateway_rest_api.data_platform.execution_arn
-  api_source_arn = "arn:aws:execute-api:${local.region}:${local.account_id}:${aws_api_gateway_rest_api.data_platform.id}/*/*"
-  tags = local.tags
+module "api_core" {
+  source             = "./modules/api_core"
+  environment        = local.environment
+  tags               = local.tags
+  account_id         = local.account_id
+  region             = local.region
+  authorizer_version = local.authorizer_version
 }
 ```
