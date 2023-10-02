@@ -27,7 +27,7 @@ func TestApiGateway(t *testing.T) {
 	defer terraform.Destroy(t, terraformOptions)
 	terraform.InitAndApply(t, terraformOptions)
 	gatewayId := terraform.Output(t, terraformOptions, "gateway_id")
-	stageUrl := fmt.Sprintf("https://%s.execute-api.eu-west-2.amazonaws.com/", gatewayId)
+	stageUrl := fmt.Sprintf("https://%s.execute-api.eu-west-2.amazonaws.com/test/", gatewayId)
 	statusCode := DoGetRequest(t, stageUrl)
 	assert.Equal(t, 200, statusCode)
 }
@@ -40,7 +40,8 @@ func DoGetRequest(t terra_test.TestingT, api string) int {
 		log.Fatalln(err)
 	}
 
-	req.Header.Add("authorizationToken", "Bearer placeholder")
+	req.Header.Add("Accept", "application/json")
+	req.Header.Add("authorizationToken", "placeholder")
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -48,8 +49,17 @@ func DoGetRequest(t terra_test.TestingT, api string) int {
 	}
 
 	if resp.StatusCode != 200 {
+		// Print all response headers for debugging
+		for name, values := range resp.Header {
+			for _, value := range values {
+				fmt.Println(name, value)
+			}
+		}
+
+		// Print response body for debugging
 		b, _ := io.ReadAll(resp.Body)
 		println("body " + string(b))
+
 	}
 
 	return resp.StatusCode

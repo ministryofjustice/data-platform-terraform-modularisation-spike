@@ -8,16 +8,16 @@ module "api_core" {
 }
 
 resource "aws_api_gateway_method" "api_get" {
-  #authorization = "CUSTOM"
+  # authorization = "CUSTOM"
   authorization = "NONE"
-  #authorizer_id = module.api_core.authorizor_id
+  # authorizer_id = module.api_core.authorizor_id
   http_method = "GET"
   resource_id = module.api_core.root_resource_id
   rest_api_id = module.api_core.gateway_id
 
-  # request_parameters = {
-  #   "method.request.header.Authorization" = true
-  # }
+  request_parameters = {
+    "method.request.header.authorizationToken" = true
+  }
 }
 
 resource "aws_api_gateway_integration" "api_get_mock" {
@@ -26,6 +26,27 @@ resource "aws_api_gateway_integration" "api_get_mock" {
   rest_api_id             = module.api_core.gateway_id
   integration_http_method = "GET"
   type                    = "MOCK"
+  request_templates = {
+    "application/json" = <<REQUEST_TEMPLATE
+    {
+      "statusCode": 200
+    }
+    REQUEST_TEMPLATE
+  }
+}
+
+resource "aws_api_gateway_integration_response" "api_get_mock" {
+  rest_api_id = aws_api_gateway_integration.api_get_mock.rest_api_id
+  resource_id = aws_api_gateway_integration.api_get_mock.resource_id
+  http_method = aws_api_gateway_integration.api_get_mock.http_method
+  status_code = 200
+  response_templates = {
+    "application/json" = <<RESPONSE_TEMPLATE
+    {
+        "message": "hello world"
+    }
+    RESPONSE_TEMPLATE
+  }
 }
 
 resource "aws_api_gateway_method_response" "response_200" {
