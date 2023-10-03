@@ -17,16 +17,4 @@ module "data_product_presigned_url_lambda" {
   environment_variables = {
     BUCKET_NAME = var.bucket_id
   }
-
-  # allowed_triggers = {
-
-  #   AllowExecutionFromAPIGateway = {
-  #     action        = "lambda:InvokeFunction"
-  #     function_name = "data_product_presigned_url_${var.environment}"
-  #     principal     = "apigateway.amazonaws.com"
-  #     source_arn    = var.source_arn_value
-  #   }
-  # }
-
 }
-

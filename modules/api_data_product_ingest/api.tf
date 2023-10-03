@@ -27,7 +27,7 @@ resource "aws_api_gateway_integration" "upload_data_to_lambda" {
   rest_api_id             = var.gateway_id
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = var.presigned_url_lambda_invoke_arn
+  uri                     = module.data_product_presigned_url_lambda.lambda_function_invoke_arn
 
   request_parameters = {
     "integration.request.querystring.database"   = "method.request.querystring.database",
@@ -42,4 +42,3 @@ resource "aws_lambda_permission" "trigger_presigned_url_from_gateway" {
   principal     = "apigateway.amazonaws.com"
   source_arn    = "arn:aws:execute-api:${var.region}:${var.account_id}:${var.gateway_id}/*/${aws_api_gateway_method.upload_data_get.http_method}${aws_api_gateway_resource.upload_data.path}"
 }
-

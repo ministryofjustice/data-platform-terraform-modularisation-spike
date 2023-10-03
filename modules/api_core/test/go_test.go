@@ -8,6 +8,7 @@ import (
 	testing "testing"
 	"time"
 
+	"github.com/gruntwork-io/terratest/modules/random"
 	terra_test "github.com/gruntwork-io/terratest/modules/testing"
 	"github.com/stretchr/testify/assert"
 
@@ -15,12 +16,11 @@ import (
 )
 
 func TestApiGateway(t *testing.T) {
-	//uniqueId := random.UniqueId()
+	uniqueId := random.UniqueId()
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: "test_terraform",
 		Vars: map[string]interface{}{
-			//"environment": fmt.Sprintf("terratest-%s", uniqueId),
-			"environment": "mm",
+			"environment": fmt.Sprintf("terratest-%s", uniqueId),
 		},
 	})
 

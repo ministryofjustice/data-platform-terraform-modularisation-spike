@@ -1,8 +1,3 @@
-variable "presigned_url_lambda_invoke_arn" {
-  description = "The invoke ARN of the presigned URL lambda"
-  type        = string
-}
-
 variable "environment" {
   description = "The environment name"
   type        = string
@@ -14,17 +9,41 @@ variable "gateway_id" {
 }
 
 variable "parent_resource_id" {
-  type = string
+  description = "The parent resource the endpoint will be attached to"
+  type        = string
 }
 
 variable "authorizor_id" {
-  type = string
+  description = "The ID of the custom authorizer for the API"
+  type        = string
 }
 
 variable "account_id" {
-  type = string
+  description = "The AWS account ID"
+  type        = string
 }
 
 variable "region" {
-  type = string
+  description = "The AWS account region. Must match the region the gateway_id resource is deployed into"
+  type        = string
+}
+
+variable "policy_json" {
+  description = "Policy that allows the ingest endpoint to access the s3 buckets it needs"
+  type        = string
+}
+
+variable "presigned_url_version" {
+  description = "The version of the presigned URL lambda docker image"
+  type        = string
+}
+
+variable "bucket_id" {
+  description = "(Landing zone) bucket ID"
+  type        = string
+}
+
+variable "tags" {
+  type        = map(string)
+  description = "Common tags to be used by all resources"
 }
