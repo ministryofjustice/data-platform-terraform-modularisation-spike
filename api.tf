@@ -19,7 +19,6 @@ module "api_data_product_ingest" {
   region                = local.region
   presigned_url_version = local.presigned_url_version
   bucket_id             = module.s3-bucket.bucket.id
-  policy_json           = data.aws_iam_policy_document.iam_policy_document_for_presigned_url_lambda.json
 }
 
 resource "aws_api_gateway_deployment" "deployment" {

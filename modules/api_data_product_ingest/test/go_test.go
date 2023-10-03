@@ -23,34 +23,11 @@ func TestApiGateway(t *testing.T) {
 
 	aws.CreateS3Bucket(t, "eu-west-2", bucketId)
 
-	// TODO move this into the module under test
-	policyJson := `{
-		"Statement": [
-			{
-				"Action": [
-					"s3:PutObject",
-					"s3:GetObject"
-				],
-				"Effect": "Allow",
-				"Resource": "*",
-				"Sid": "GetPutDataObject"
-			},
-			{
-				"Action": "s3:ListBucket",
-				"Effect": "Allow",
-				"Resource": "*",
-				"Sid": "ListExistingDataProducts"
-			}
-		],
-		"Version": "2012-10-17"
-	}`
-
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: "test_terraform",
 		Vars: map[string]interface{}{
 			"environment": fmt.Sprintf("terratest-%s", uniqueId),
 			"bucket_id":   bucketId,
-			"policy_json": policyJson,
 		},
 	})
 

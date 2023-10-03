@@ -28,11 +28,6 @@ variable "region" {
   type        = string
 }
 
-variable "policy_json" {
-  description = "Policy that allows the ingest endpoint to access the s3 buckets it needs"
-  type        = string
-}
-
 variable "presigned_url_version" {
   description = "The version of the presigned URL lambda docker image"
   type        = string

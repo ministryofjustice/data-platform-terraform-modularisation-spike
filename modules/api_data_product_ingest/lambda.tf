@@ -5,7 +5,7 @@ module "data_product_presigned_url_lambda" {
   description                    = "Lambda to generate a presigned url for uploading data"
   create_role                    = true
   role_name                      = "presigned_url_lambda_role_${var.environment}"
-  policy_json                    = var.policy_json
+  policy_json                    = data.aws_iam_policy_document.iam_policy_document_for_presigned_url_lambda.json
   function_name                  = "data_product_presigned_url_${var.environment}"
   reserved_concurrent_executions = 1
 

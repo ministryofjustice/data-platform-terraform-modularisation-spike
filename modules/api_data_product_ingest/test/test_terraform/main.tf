@@ -7,10 +7,6 @@ variable "bucket_id" {
   type = string
 }
 
-variable "policy_json" {
-  type = string
-}
-
 module "api_core" {
   source             = "../../../api_core"
   tags               = {}
@@ -31,7 +27,6 @@ module "api_data_product_ingest" {
   region                = "eu-west-2"
   presigned_url_version = "1.0.0"
   bucket_id             = var.bucket_id
-  policy_json           = var.policy_json
 }
 
 // Deploy to the "test" stage
